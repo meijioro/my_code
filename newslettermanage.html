@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html class=" gt-ie9 modePublish js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths webkit no-mobile">
+
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Slate: Newsletter Management</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link type="text/css" href="http://static.cdnslate.com/etc/designs/slate/css/story.f22782e1.css" rel="stylesheet">
+
+  <style>
+    .clearfix:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
+    body.article, body.landing { padding-top: 0; }
+
+    body.landing .main { margin-left: 0; }
+
+    .page .sidebar {
+      position: absolute;
+      float: right;
+      right: 0;
+      display: block;
+      z-index: 30;
+      border: none;
+      background: none;
+    }
+
+    .search {
+      background: #fff;
+      z-index: 5;
+      padding: 3px 0 5px;
+      transition: all 0.3s ease;
+    }
+
+    .search-sticky {
+      position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .search-sticky:after {
+        content: "";
+        background: url('http://static.cdnslate.com/etc/designs/slate/images/article/rolldown-bottom-border-tile.png') bottom repeat-x;
+        height: 7px;
+        position: absolute;
+        bottom: -7px;
+        left: 0;
+        display: block;
+        right: 0;
+
+    }
+
+    @media (max-width: 1023px) {
+      .article-header { padding-top: 50px; }
+      .page .sidebar {
+        bottom: auto;
+        right: 0;
+        width: 100%;
+        display: block;
+      }
+      .page .sidebar .nav-panel { visibility: visible; }
+    }
+    @media (max-width: 640px)  {
+      .page .main {
+        padding-top: 50px;
+      }
+      .meta {
+        background: transparent url("http://static.cdnslate.com/etc/designs/slate/images/article/meta-underline.gif") no-repeat right bottom;
+      }
+      .page {
+          overflow: visible;
+      }
+    }
+
+
+    p {
+      font-family: 'sl-BrandonGrotesque', Helvetica, sans-serif;
+      font-size: 20px;
+    }
+
+    .article-header p {
+      margin-bottom: 0;
+    }
+
+    .meta div { border: none; }
+
+    .section-links {
+      float: right;
+      padding: 20px 20px 10px !important;
+      background: #E5E5E5;
+      width: 160px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .section-links li {
+      margin-bottom: 5px;
+    }
+    .section-links li a {
+      text-transform: uppercase;
+      display: block;
+
+      line-height: 15px;
+      color: #281b21;
+      padding: 7px 6px 4px;
+      font-family: 'sl-BrandonGrotesque';
+      font-weight: bold;
+      border: 1px solid transparent;
+    }
+
+    .section-links li a:hover, .section-links li a:focus {
+      border: 1px solid #603;
+      background-color: #fff;
+      color: #603;
+    }
+
+    .btn {
+      line-height: normal;
+      height: 45px;
+      border: 1px solid #ccc;
+      color: #fff;
+      font-size: 20px;
+      width: 200px;
+      padding: 0;
+      background: #f60;
+      text-transform: uppercase;
+      border-radius: 0;
+      font-family: 'sl-TitlingGothicFBCondensed';
+      font-weight: bold;
+      margin: 0;
+    }
+
+    #email-reg {
+      width: 400px;
+      margin-right: 10px;
+      border: 1px solid #CFCFCF;
+      padding-left: 20px;
+      padding-right: 20px;
+      float: left;
+      line-height: 40px;
+      font-size: 18px;
+      border-radius: 0;
+      font-family: 'sl-BrandonGrotesque';
+    }
+
+    #email-reg[disabled] {
+      background-color: #eee;
+      opacity: 1;
+    }
+
+    @media (max-width: 1023px) {
+      #email-reg {
+        padding-top: 0;
+        line-height: 38px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .btn {
+        font-size: 16px;
+        width: 100px;
+      }
+      #email-reg {
+        font-size: 16px;
+        line-height: 30px;
+        padding: 8px 10px 5px;
+        width: 52%;
+        margin-right: 5px;
+      }
+    }
+
+    .email-checkboxes {
+      clear: both;
+      margin-left: -3px;
+      padding: 20px 0;
+      width: 98%;
+    }
+
+    .half-height {
+      padding: 0 20px 20px;
+      width: 19.66666667%;
+      float: left;
+      color: #000;
+      margin: 0 3px 7px;
+      position: relative;
+      height: auto;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      padding-bottom: 20px;
+
+    }
+
+    .half-height p { font-size: 17px; }
+
+    @media (max-width: 1023px) {
+      .half-height {
+        width: 18%;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .email-checkboxes { margin-left: 0; }
+      .half-height { width: 33.33333333%; }
+    }
+
+    input[type=checkbox]:checked + label.half-height {
+      border:1px solid #59072b;
+      background: url('http://static.cdnslate.com/etc/designs/slate/images/top-comment-background-tile.gif');
+    }
+
+    .half-height .hed {
+      display: block;
+      color: #340000;
+      margin: 15px 0px;
+      line-height: 1;
+      font-size: 23px;
+    }
+
+    .fa-check {
+      position: absolute;
+      bottom: 15px;
+      color: #560a26;
+      display: none;
+    }
+
+    input[type=checkbox] { display:none; }
+    input[type=checkbox]:checked + label .fa-check {
+      display: block;
+    }
+
+    [class^="box-wrapper"],
+    [class*="box-wrapper"] {
+      display: inline-block;
+    }
+
+    </style>
+
+    <script id="slate-webfont-localstorage-js">
+        ! function() {
+            function e(e, t, n) {
+                e.addEventListener ? e.addEventListener(t, n, !1) : e.attachEvent && e.attachEvent("on" + t, n)
+            }
+
+            function t(e) {
+                return window.localStorage && localStorage.font_css_cache && localStorage.font_css_cache_file === e
+            }
+
+            function n() {
+                if (window.localStorage && window.XMLHttpRequest)
+                    if (t(o)) a(localStorage.font_css_cache);
+                    else {
+                        var n = new XMLHttpRequest;
+                        n.open("GET", o, !0), e(n, "load", function() {
+                            4 === n.readyState && (a(n.responseText), localStorage.font_css_cache = n.responseText, localStorage.font_css_cache_file = o)
+                        }), n.send()
+                    } else {
+                        var c = document.createElement("link");
+                        c.href = o, c.rel = "stylesheet", c.type = "text/css", document.getElementsByTagName("head")[0].appendChild(c), document.cookie = "font_css_cache"
+                    }
+            }
+
+            function a(e) {
+                var t = document.createElement("style");
+                t.innerHTML = e, document.getElementsByTagName("head")[0].appendChild(t)
+            }
+            var o = "http://static.cdnslate.com/etc/designs/slate/css/slate-fonts.3d7d8557.css";
+            window.localStorage && localStorage.font_css_cache || document.cookie.indexOf("font_css_cache") > -1 ? n() : e(document, "DOMContentLoaded", n)
+        }();
+    </script>
+</head>
+
+<body class="article story landing" cz-shortcut-listen="true" ng-app="myApp">
+
+  <form id="search_form" class="search-form" action="#" method="post">
+
+    <div class="page">
+      <aside class="sidebar">
+            <div class="sidebar-wrapper" style="position:relative; overflow: auto;">
+
+                <section class="nav-panel" id="slate_logo">
+                    <div class="nav-header">
+                        <a class="slate-logo" href="http://www.slate.com/" target="_blank"><span class="logo">Slate</span></a>
+
+                        <!-- login -->
+                        <a href="http://www.slate.com/account.settings.html" class="user-link sidebar-handle" target="_blank"></a>
+
+                        <!-- search -->
+                        <a href="http://www.slate.com/search.html" class="search-link sidebar-handle" target="_blank"></a>
+
+            <!-- drop down -->
+                        <a href="#" id="openMenu" class="global-nav-handle sidebar-handle"></a>
+                    </div>
+                </section>
+
+
+                  <ul class="unstyled section-links" style="display:none;">
+            <li><a href="http://www.slate.com/full_slate.html" target="_blank">Recent</a></li>
+            <li><a href="http://www.slate.com/plus/home" target="_blank">Slate Plus</a></li>
+            <li><a href="http://www.slate.com/articles/news_and_politics.html" target="_blank">News &amp; Politics</a></li>
+            <li><a href="http://www.slate.com/articles/arts.html" target="_blank">Arts</a></li>
+            <li><a href="http://www.slate.com/articles/technology.html" target="_blank">Technology</a></li>
+            <li><a href="http://www.slate.com/articles/business.html" target="_blank">Business</a></li>
+            <li><a href="http://www.slate.com/articles/life.html" target="_blank">Life</a></li>
+            <li><a href="http://www.slate.com/articles/health_and_science.html" target="_blank">Health &amp; Science</a></li>
+            <li><a href="http://www.slate.com/articles/double_x.html" target="_blank">Double X</a></li>
+            <li><a href="http://www.slate.com/articles/sports.html" target="_blank">Sports</a></li>
+            <li><a href="http://www.slate.com/articles/video.html" target="_blank">Video</a></li>
+            <li><a href="http://www.slate.com/plus/home" target="_blank">Photos</a></li>
+            <li><a href="http://www.slate.com/articles/podcasts.html" target="_blank">Podcasts</a></li>
+                  </ul>
+
+            </div>
+            <!-- /.sidebar-wrapper -->
+        </aside>
+        <!-- /.sidebar -->
+
+        <div class="main">
+            <header class="article-header">
+              <div class="meta">
+                <div class="prop-name">
+                  <a href="#">Newsletters</a>
+                </div>
+                <div class="prop-desc">Slate in your inbox.</div>
+              </div>
+
+              <h1 class="hed">Newsletters</h1>
+              <p>Choose which emails you would like to receive below.</p>
+            </header><!-- /header -->
+      </div><!-- /.main -->
+    </div> <!-- close page -->
+
+
+
+    <section id="getFixed" class="search content">
+      <div class="page">
+        <input id="email-reg" class="field-with-placeholder" type="email" placeholder="Enter your email" name="email" data-validation="required email" value="{profile.email}" />
+        <input type="hidden" name =".optout_template" value="1"/>
+        <button class="btn" type="submit" name="submit" id="sign-up">Update</button>
+    </div>
+    </section>
+
+
+  <div class="page" ng-controller="myCtrl">
+    <div class="email-checkboxes clearfix">
+
+      <span ng-repeat="newsletter in email_lists">
+        <input name="lists[{{newsletter.list}}]" type="checkbox" id="box{{$index}}" />
+        <label class="half-height" for="box{{$index}}">
+          <span class="hed">{{newsletter.title}}</span>
+          <p>{{newsletter.desc}}</p>
+          <i class="fa fa-check"></i>
+        </label>
+      </span>
+
+    </div><!-- close email-checkboxes -->
+
+    <p>To ensure delivery of our newsletters, please add, 'slatenewsletters@nl.slate.com' to your address book in your email.</p>
+
+  </div><!-- /.page -->
+
+  </form>
+
+<div class="page" style="margin-bottom: 20px;">
+  <hr style="border-top: 1px solid #281B21; margin: 30px 0;" />
+  <p>If you'd no longer like to receive Slate's marketing and promotion emails, click Unsubscribe below.</p>
+  <form action="" method="post">
+    <input type="hidden" name=".optout_basic" value="1">
+    <input class="btn" name="action" value="Unsubscribe" type="submit">
+    <input type="hidden" name="profile_id" value="">
+    <input type="hidden" name="st_form_num" value="1">
+  </form>
+</div>
+
+
+
+
+    <footer class="footer-base">
+        <div class="container">
+
+            <div class="sub-slate-row">
+                <div class="left">
+                    <span class="label">FOLLOW SLATE</span>
+                    <a href="https://twitter.com/slate" class="twitter" target="_blank">
+                        <img src="http://static.cdnslate.com/etc/designs/slate/images/social/yellow-twitterNew.png">
+                    </a>
+                    <a href="http://www.facebook.com/Slate" class="facebook" target="_blank">
+                        <img src="http://static.cdnslate.com/etc/designs/slate/images/social/yellow-facebookNew.png">
+                    </a>
+                    <a href="https://instagram.com/slate" class="instagram" target="_blank">
+                        <img src="http://media.sailthru.com/3qk/1jz/8/5/55c22b1c783c8.png" style="width: 39px;">
+                    </a>
+                </div>
+
+                <div class="left slate-on">
+                    <span class="label">SLATE ON</span>
+                    <a href="http://itunes.apple.com/us/app/slate-magazine/id384914589?mt=8" target="_blank">IPAD</a>
+                    <a href="http://itunes.apple.com/us/app/slate-com/id357555242?mt=8" target="_blank">IPHONE</a>
+                    <a href="https://market.android.com/details?id=com.wapo.slate.android" target="_blank">ANDROID</a>
+                    <a href="http://www.amazon.com/gp/product/B000IOMTC0?ie=UTF8&tag=slatmaga-20&link_code=as3&camp=211189&creative=373489&creativeASIN=B000IOMTC0/" target="_blank">KINDLE</a>
+                </div>
+
+                <div class="right">
+                    <a href="http://www.slatereprints.com/" class="label reprints" target="_blank">REPRINTS</a>
+
+                    <a href="http://innovate.slate.com/" class="label advertise-with-us" target="_blank">ADVERTISE WITH US</a>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </footer>
+
+    <footer class="footer-base-toc">
+        <div class="container">
+            <div class="footer-link-cols">
+                <ul>
+                    <li><a href="http://www.slate.com/articles/news_and_politics/slate_fare/2006/08/about_us.html" target="_blank">ABOUT US</a>
+                    </li>
+                    <li><a href="http://www.slate.com/articles/briefing/contact_us/2006/08/whereto_find_slate_staff.html" target="_blank">CONTACT US</a>
+                    </li>
+                    <li><a href="http://www.slate.com/articles/news_and_politics/slate_fare/2008/04/a_job_for_you_at_slate.html" target="_blank">WORK WITH US</a>
+                    </li>
+                </ul>
+                <ul class="center">
+                    <li><a href="http://www.slate.com/articles/briefing/slate_user_agreement_and_privacy_policy/2012/12/slate_s_terms_of_service.html" target="_blank">USER AGREEMENT</a>
+                    </li>
+                    <li><a href="http://www.slate.com/articles/briefing/slate_user_agreement_and_privacy_policy/2012/12/slate_s_privacy_policy.html" target="_blank">PRIVACY POLICY</a>
+                    </li>
+                    <li><a href="http://www.slate.com/articles/briefing/slate_fare/2011/12/commenting_on_slate_frequently_asked_questions.html" target="_blank">FAQ</a>
+                    </li>
+                </ul>
+                <ul class="last">
+                    <li><a href="mailto:feedback@slate.com">FEEDBACK</a>
+                    </li>
+                    <li><a href="http://www.slate.com/articles/news_and_politics/corrections.html" target="_blank">CORRECTIONS</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="copyright unstyled">
+                <li>
+                    <a href="http://www.slate.com/" target="_blank">
+                        <img src="http://static.cdnslate.com/etc/designs/slate/images/the-slate-group-logo.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.theroot.com/" target="_blank" target="_blank">
+                        <img src="http://static.cdnslate.com/etc/designs/slate/images/the-root-logo.png">
+                    </a>
+                </li>
+                <li class="blurb">Slate is published by The Slate Group, a Graham Holdings Company. All contents &copy; <script>document.write(new Date().getFullYear())</script> The Slate Group LLC. All rights reserved.</li>
+            </ul>
+        </div>
+        <!-- /.container -->
+    </footer>
+    <!-- /.footer-base-toc -->
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <!-- ANGULAR -->
+    <script type="text/javascript">
+      var app = angular.module('myApp', []);
+      app.controller('myCtrl', function($scope) {
+        $scope.email_lists = [{
+          list: 'Culture',
+          title: 'Culture',
+          desc: 'We take high and low culture seriously &mdash; without taking ourselves too seriously. The best of movies, TV, books, music, and more delivered weekly.'
+        }, {
+          list: 'Dear Prudence',
+          title: 'Dear Prudence',
+          desc: 'Advice on manners and morals, delivered three times a week.'
+        }, {
+          list: 'Events',
+          title: 'Events',
+          desc: 'Be the first to know when Slate holds live podcasts, screenings, and other in-person events around the country.'
+        }, {
+          list: 'Future Tense',
+          title: 'Future Tense',
+          desc: 'The most interesting technology news of the week, plus commentary on how tech advances are changing your world in ways small and large, delivered weekly.'
+        }, {
+          list: 'Mom and Dad',
+          title: 'Mom and Dad Are Fighting',
+          desc: 'A debate on the latest parenting strategies with Allison Benedikt and Dan Kois. A biweekly podcast.'
+        }, {
+          list: 'The Gist',
+          title: 'The Gist',
+          desc: 'A daily news podcast by Mike Pesca, covering politics, culture, history, sociology, science, and animal husbandry.'
+        }, {
+          list: 'The Slatest',
+          title: 'The Slatest',
+          desc: 'The Slatest’s best posts—smartly written updates on the most urgent, surprising, and unusual news from across the nation, world, and Internet, delivered to your inbox daily.'
+        }, {
+          list: 'Slate News Quiz',
+          title: 'The Slate News Quiz',
+          desc: 'Twelve challenging questions on the week’s biggest and weirdest news events, with host and 74-time Jeopardy! winner Ken Jennings, delivered on Friday.'
+        }, {
+          list: 'Today in Slate',
+          title: 'The Angle',
+          desc: 'The very best pieces from Slate, hand-curated and delivered to you daily.'
+        }, {
+          list: 'Slate Academies',
+          title: 'Slate Academies',
+          desc: 'Slate’s ambitious editorial and educational projects on a wide range of topics. Sign up to be notified when new Academies and new episodes are released.'
+        }, {
+          list: 'Slate Picks',
+          title: 'Slate Picks',
+          desc: 'Slate’s favorite things we’ve bought, used and loved. Get new Picks in your inbox.'
+        }]; //end feed
+
+
+
+      });
+
+    </script>
+    <!-- END ANGULAR -->
+
+    <script type="text/javascript">
+    $(function(){
+
+      $('#openMenu').click(function(){
+        $('.section-links').slideToggle();
+      });
+
+      function fixDiv() {
+          var $cache = $('#getFixed');
+          var $header = $('.article-header');
+
+          if ($(window).scrollTop() > $header.offset().top + $header.height() - 30 ) {
+            $cache.addClass('search-sticky');
+          } else {
+            $cache.removeClass('search-sticky');
+            }
+      }
+
+      $(window).scroll(fixDiv);
+      fixDiv();
+
+      var equalheight = function(container){
+        var currentTallest = 0,
+            currentRowStart = 0,
+            rowDivs = new Array(),
+            $el,
+            topPosition = 0;
+
+        $(container).each(function() {
+
+            $el = $(this);
+            $($el).height('auto')
+            topPostion = $el.position().top;
+
+            if (currentRowStart != topPostion) {
+              for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+                  rowDivs[currentDiv].height(currentTallest);
+              }
+              rowDivs.length = 0; // empty the array
+              currentRowStart = topPostion;
+              currentTallest = $el.height();
+              rowDivs.push($el);
+            } else {
+              rowDivs.push($el);
+              currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+            }
+
+            for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+              rowDivs[currentDiv].height(currentTallest);
+            }
+        });
+      }// close equalheight
+
+      $(window).load(function() {
+        equalheight('.half-height');
+      });
+
+      $(window).resize(function(){
+        equalheight('.half-height');
+      });
+    });
+    </script>
+
+    {if list}
+    <!--script type="text/javascript">
+    $(function(){
+      $('#sign-up').html('<img src="http://media.sailthru.com/3qk/1jz/9/g/55f9b9c93f897.gif" />')
+
+      {switch list}
+        {case 'culture'}
+            document.getElementById("box1").checked = true;
+        {/case}
+        {case 'future'}
+            document.getElementById("box4").checked = true;
+        {/case}
+        {case 'today'}
+            document.getElementById("box11").checked = true;
+        {/case}
+      {/switch}
+
+      setTimeout(function(){
+        $('#sign-up').trigger('click');
+      }, 500);
+    });
+    </script-->
+    {/if}
+
+
+</body>
+
+</html>
